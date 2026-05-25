@@ -1,6 +1,8 @@
 import re
 import dateparser
 
+from dateparser.search import search_dates
+
 
 def clean_text(text):
 
@@ -25,21 +27,36 @@ def extract_date(text):
 
     cleaned_text = clean_text(text)
 
-    date = dateparser.parse(
-        cleaned_text,
-        languages=["es"],
+    try:
 
-        settings={
+        result = search_dates(
+            cleaned_text,
 
-            "PREFER_DATES_FROM": "future",
+            languages=["es"],
 
-            "TIMEZONE": "America/Lima",
+            settings={
 
-            "RETURN_AS_TIMEZONE_AWARE": False,
-        }
-    )
+                "PREFER_DATES_FROM": "future",
 
-    return date
+                "TIMEZONE": "America/Lima",
+
+                "RETURN_AS_TIMEZONE_AWARE": False,
+            }
+        )
+
+        print("TEXTO:", cleaned_text)
+        print("RESULTADO:", result)
+
+        if result:
+            return result[0][1]
+
+        return None
+
+    except Exception as e:
+
+        print("ERROR FECHA:", e)
+
+        return None
 
 
 def detect_type(text):
@@ -60,5 +77,14 @@ def detect_type(text):
 
     if "tesis" in text:
         return "thesis"
+
+    if "pago" in text:
+        return "payment"
+
+    if "comprar" in text:
+        return "shopping"
+
+    if "estudiar" in text:
+        return "study"
 
     return "general"
