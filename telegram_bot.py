@@ -42,8 +42,3 @@ def save_from_telegram(message):
 📅 Fecha: {result["detected_date"]}
 """
     )
-
-
-print("🤖 HELIOS Telegram Bot iniciado...")
-
-bot.infinity_polling()

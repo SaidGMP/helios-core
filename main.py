@@ -1,5 +1,8 @@
+import threading
+
 import scheduler
 
+from telegram_bot import bot
 from telegram_utils import send_telegram_message
 
 from fastapi import FastAPI
@@ -79,3 +82,18 @@ def test_telegram():
     return {
         "message": "Telegram sent"
     }
+
+
+# =========================
+# TELEGRAM BOT
+# =========================
+
+def run_telegram_bot():
+    bot.infinity_polling()
+
+
+telegram_thread = threading.Thread(
+    target=run_telegram_bot
+)
+
+telegram_thread.start()
